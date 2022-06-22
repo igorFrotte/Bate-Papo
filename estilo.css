@@ -1,4 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap');
+
 * {
     box-sizing: border-box;
 }
 
+body {
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagina {
+    width: 376px;
+    background: #F3F3F3;
+}
+
+.topo {
+    width: 376px;
+    height: 80px;
+    position: fixed;
+    right: 50%;
+    top: 0px;
+    transform: translateX(188px);
+    background: #FFFFFF;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+}
+.topo ion-icon {
+    font-size: 40px;
+}
+
+.chat {
+    width: 100%;
+    padding: 100px 0;
+}
+
+p {
+    width: 100%;
+    border-radius: 2px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;   
+    margin: 4px 0;
+    padding: 9px;
+    word-wrap: break-word;
+}
+
+span {
+    color: #AAAAAA;
+}
+strong {
+    font-weight: bold;
+}
+
+.notif {
+    background-color: #DCDCDC;
+}
+.msg {
+    background-color: #FFFFFF;
+}
+.reserv {
+    background-color: #FFDEDE;
+}
+
+.base {
+    position: fixed;
+    width: 376px;
+    height: 80px;
+    right: 50%;
+    transform: translateX(188px);
+    bottom: 0px;
+    background: #FFFFFF;
+    box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+}
+.base ion-icon {
+    font-size: 26px;
+}
+
+input {
+    border: 0;
+    outline: 0;
+    width: 88%;
+}
+
+input::placeholder {
+    color: black;
+}
