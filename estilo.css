@@ -57,13 +57,13 @@ strong {
     font-weight: bold;
 }
 
-.notif {
+.status {
     background-color: #DCDCDC;
 }
-.msg {
+.message {
     background-color: #FFFFFF;
 }
-.reserv {
+.private_message {
     background-color: #FFDEDE;
 }
 
@@ -85,12 +85,15 @@ strong {
     font-size: 26px;
 }
 
-input {
+textarea {
     border: 0;
     outline: 0;
     width: 88%;
+    resize: none;
+    height: 25px;
 }
 
-input::placeholder {
+textarea::placeholder {
     color: black;
+    font-style: italic;
 }
