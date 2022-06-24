@@ -1,11 +1,61 @@
-const nome = "oi";
-/* window.prompt("Qual o seu nome?"); */
+let nome = "";
 
-carregar();
+logar();
 setInterval(carregar, 3000);
 
+document.querySelector("textarea").addEventListener("keypress", enviarEnter);
 
+function enviarEnter(tecla){
+    console.log(tecla);
+    if(tecla.key === 'Enter'){
+        enviar();
+    }
+}
 
+function enviar(){
+    const msg = document.querySelector("textarea");
+    const dados = {
+        from: nome,
+	    to: "Todos",  
+	    text: msg.value,
+	    type: "message"  // private_message
+    }
+    const promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', dados);
+    promessa.then(msgValida);
+    promessa.catch(msgError);
+    msg.value = "";
+}
+
+function msgValida(resposta){
+    carregar();
+}
+
+function msgError(error){
+    window.location.reload();
+}
+
+function logar(){
+    nome = window.prompt("Qual seu nome?");
+    const dados = {name: nome};
+    const promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants', dados);
+    promessa.then(nomeValido);
+    promessa.catch(tratarErro);
+}
+
+function nomeValido(resposta){
+    carregar();
+    setInterval(manterLogado, 5000);
+}
+
+function tratarErro(error){
+    logar();
+}
+
+function manterLogado(){
+    const dados = {name: nome};
+    const promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/status', dados);
+    promessa.then();
+}
 
 function crescer(elemento){
     if(elemento.scrollHeight < 65){
@@ -19,7 +69,6 @@ function crescer(elemento){
 function carregar(){
     const promessa = axios.get('https://mock-api.driven.com.br/api/v6/uol/messages');
     promessa.then(tratarSucesso);
-    promessa.catch(tratarErro);
 }
 
 function tratarSucesso(resposta){
@@ -39,9 +88,3 @@ function tratarSucesso(resposta){
     ultimoP = document.querySelector('p:last-child');
     ultimoP.scrollIntoView();
 }
-
-function tratarErro(error){
-    console.log(error);
-    /* tratar erros */
-}
-
