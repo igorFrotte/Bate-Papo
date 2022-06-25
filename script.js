@@ -2,7 +2,65 @@ let nome = "";
 
 // BONUS INICIO
 
+let toNome = "Todos";
+let tipoMsg = "message"; // or private_message    
+
 document.querySelector("textarea").addEventListener("keypress", enviarEnter);
+
+function notif(){
+    let not = document.querySelector(".notif");
+
+    if(toNome !== "Todos"){
+        not.innerHTML = "Enviando para " + toNome;
+        if(tipoMsg === "private_message"){
+            not.innerHTML += " (reservadamente)";
+        }
+    }else { not.innerHTML = "";  }
+}
+
+function logados(){
+    const promessa = axios.get('https://mock-api.driven.com.br/api/v6/uol/participants');
+    promessa.then(sucessoLog);
+}
+
+function sucessoLog(obj){
+    const dom = document.querySelector(".listaNomes");
+    if(toNome === "Todos"){
+        dom.innerHTML = "<div data-identifier='participant' class='nomeEscolhido' onclick='selecNome(this)'><div><ion-icon name='people'></ion-icon><span>Todos</span></div><img src='./imagens/certin.png' ></div>";
+    }else{   dom.innerHTML = "<div data-identifier='participant' onclick='selecNome(this)'><div><ion-icon name='people'></ion-icon><span>Todos</span></div><img src='./imagens/certin.png' ></div>";   }
+
+    for(let i = 0;i<obj.data.length;i++){
+        if(obj.data[i].name === toNome){
+            dom.innerHTML += `<div data-identifier='participant' class='nomeEscolhido' onclick='selecNome(this)'><div><ion-icon name='person-circle'></ion-icon><span>${obj.data[i].name}</span></div><img src='./imagens/certin.png' ></div>`;
+        }else {   dom.innerHTML += `<div data-identifier='participant' onclick='selecNome(this)'><div><ion-icon name='person-circle'></ion-icon><span>${obj.data[i].name}</span></div><img src='./imagens/certin.png' ></div>`; }
+    }
+}
+
+function selecNome(elemento){
+    document.querySelector(".nomeEscolhido").classList.remove("nomeEscolhido");
+    elemento.classList.add("nomeEscolhido");
+    toNome = elemento.querySelector("span").textContent;
+    if(toNome === "Todos"){
+        selecVisib(document.querySelector(".visibPub"));
+    }
+    notif();
+}
+
+function selecVisib(elemento){
+    if(toNome !== "Todos" || tipoMsg === "private_message"){
+        document.querySelector(".visibEscolhida").classList.remove("visibEscolhida");
+        elemento.classList.add("visibEscolhida");
+        if(elemento.querySelector("span").textContent === "Reservadamente"){
+            tipoMsg = "private_message";
+        }else { tipoMsg = "message";    }
+        notif();
+    }
+}
+
+function trocaTelaMenu(){
+    logados();
+    document.querySelector(".fundoMenu").classList.toggle("escondido");
+}
 
 function trocaTelaLogin(){
     document.querySelector(".pagLogin").classList.add("escondido");
@@ -28,9 +86,9 @@ function enviar(){
     if(msg.value !== ""){ // "  " problem
      const dados = {
             from: nome,
-	        to: "Todos",  
+	        to: toNome,  
 	        text: msg.value,
-	        type: "message"  // private_message
+	        type: tipoMsg  
         }
         const promessa = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', dados);
         promessa.then(msgValida);
@@ -61,6 +119,8 @@ function nomeValido(resposta){
     setInterval(manterLogado, 5000);
     trocaTelaLogin();
     setInterval(carregar, 3000);
+    logados();
+    setInterval(logados,10000);
 }
 
 function tratarErro(error){
@@ -79,7 +139,7 @@ function crescer(elemento){
     if(elemento.scrollHeight < 65){
     elemento.style.height = elemento.scrollHeight + "px";
     }
-    if(elemento.value.length < 39){
+    if(elemento.value.length < 30){
         elemento.style.height = "25px";
     } 
 }
@@ -99,7 +159,7 @@ function tratarSucesso(resposta){
             elemento.innerHTML += `<p class="${resposta.data[i].type}"><span>(${resposta.data[i].time}) </span><strong>${resposta.data[i].from}</strong> ${resposta.data[i].text}</p>`;  
         }else if(resposta.data[i].type === "message"){
             elemento.innerHTML += `<p class="${resposta.data[i].type}"><span>(${resposta.data[i].time}) </span><strong>${resposta.data[i].from}</strong> para <strong>${resposta.data[i].to}: </strong> ${resposta.data[i].text}</p>`;
-        }else if(resposta.data[i].type === "private_message" && nome === resposta.data[i].to ){
+        }else if(resposta.data[i].type === "private_message" && (nome === resposta.data[i].to || nome === resposta.data[i].from) ){
             elemento.innerHTML += `<p class="${resposta.data[i].type}"><span>(${resposta.data[i].time}) </span><strong>${resposta.data[i].from}</strong> reservadamente para <strong>${resposta.data[i].to}: </strong> ${resposta.data[i].text}</p>`;
         }
     }

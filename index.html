@@ -24,15 +24,42 @@
     <div class="pagina escondido">
         <div class="topo">
             <img src="./imagens/uol.png">
-            <ion-icon name="people"></ion-icon>
+            <div onclick="trocaTelaMenu()"><ion-icon name="people"></ion-icon></div>
         </div>
         <div class="chat">
             <p></p>
         </div>
         <div class="base">
-            <textarea onkeyup="crescer(this)" onkeypress="crescer(this)" placeholder="Escreva aqui..." ></textarea>
+            <div>
+                <textarea onkeyup="crescer(this)" onkeypress="crescer(this)" placeholder="Escreva aqui..." ></textarea>
+                <div class="notif"></div>
+            </div>
             <bug onclick="enviar()" ><ion-icon  name="paper-plane-outline"></ion-icon></bug>
         </div>
+    </div>
+    <div class="fundoMenu escondido">
+        <div class="menu">
+            <div class="titulo">
+               Escolha um contato para enviar mensagem:
+            </div>
+            <div class="listaNomes">
+                
+            </div>
+            <div class="titulo">
+                Escolha a visibilidade:
+             </div>
+            <div class="listaMsg">
+                <div data-identifier="visibility" class='visibPub visibEscolhida' onclick='selecVisib(this)'>
+                    <div><ion-icon name="lock-open"></ion-icon><span>Público</span></div>
+                    <img src="./imagens/certin.png" >
+                </div>
+                <div data-identifier="visibility" onclick='selecVisib(this)'>
+                    <div><ion-icon name="lock-closed"></ion-icon><span>Reservadamente</span></div>
+                    <img src="./imagens/certin.png" >
+                </div>
+            </div>
+        </div>
+        <div onclick="trocaTelaMenu()" class="fundo"></div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
